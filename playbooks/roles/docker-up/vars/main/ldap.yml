@@ -1,0 +1,9 @@
+---
+image: "osizia/openldap:1.4.0-amd64"
+volumes:
+  - "srv/ldap/data:/var/lib/ldap"
+  - "srv/ldap/config:/etc/ldap/slapd.d"
+env:
+  organisation: inahym Inc.
+  domain: inahym.com
+  adminpass: admin

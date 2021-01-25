@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
+    ports:
+      - "80:80"
+      - "81:81"
+    volumes:
+      - '/srv/gitlab/config:/etc/gitlab'
+      - '/srv/gitlab/logs:/var/log/gitlab'
+      - '/srv/gitlab/data:/var/opt/gitlab'
+    environment:
+      LDAP_ENABLED: "true"
+      LDAP_HOST: 172.16.0.2
+      LDAP_PORT: 389
+      LDAP_METHOD: plain
+      LDAP_BIND_DN: "cn=admin,dc=inahym,dc=com"
+      LDAP_PASS: "admin"
+      LDAP_BASE: "ou=Persons,dc=inahym,dc=com"
+      LDAP_UID: cn
+
+networks:
+  default:
+    external:
+      name: back_nw

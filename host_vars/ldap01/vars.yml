@@ -1,0 +1,9 @@
+---
+ldap_org: inahym Inc.
+ldap_domain: inahym.com
+ldap_adminpass: admin
+
+docker_up_image: "osixia/openldap:1.4.0-amd64"
+docker_up_volumes:
+  - "/srv/ldap/data:/var/lib/ldap"
+  - "/srv/ldap/config:/etc/ldap/slapd.d"

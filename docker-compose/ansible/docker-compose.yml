@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  ansible:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ansible
+    command: "/bin/sh"
+    tty: true
+    volumes:
+      - /home/ubuntu/ansy:/ansible/ansy
+    networks:
+      default:
+        ipv4_address: 172.20.0.2
+
+networks:
+  default:
+    external:
+      name: common

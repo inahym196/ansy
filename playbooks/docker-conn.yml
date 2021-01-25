@@ -1,0 +1,6 @@
+---
+- hosts: ldap
+  connection: docker
+  tasks:
+    - name: ping
+      ping:

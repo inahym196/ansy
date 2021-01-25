@@ -1,0 +1,15 @@
+---
+# tasks file for docker-up
+
+- name: create docker-compose
+  ansible.builtin.template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ [ basepath, item,'docker-compose.yml'] | path_join }}"
+  loop: "{{ filename }}"
+  tags: create_docker_compose
+
+- name: Run docker-compose 
+  community.general.docker_compose:
+    project_src: "{{ [basepath, item] | path_join }}"
+  loop: "{{ filename }}"
+  tags: run_docker_compose

@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  ldap-server:
+    image: osixia/openldap:1.4.0-amd64
+    restart: always
+    container_name: ldap-server
+    hostname: ldap01
+    domainname: inahym.com
+    environment:
+      LDAP_ORGANISATION: {{ env.organisation }}
+      LDAP_DOMAIN: {{ env.domain }}
+      LDAP_ADMIN_PASSWORD: {{ env.adminpass }}
+    volumes: 
+       - '/srv/ldap/data:/var/lib/ldap'
+       - '/srv/ldap/config:/etc/ldap/slapd.d'
+    tty: true
+
+  ldap-admin:
+    image: osixia/phpldapadmin:stable-amd64
+    restart: always
+    container_name: ldap-admin
+    hostname: ldap-admin01
+    domainname: inahym.com
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap-server"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "8080:80"
+
+networks:
+  default:
+    external:
+      name: common

@@ -1,0 +1,14 @@
+---
+# tasks file for ldap-search
+
+- name: ldap-search
+  community.general.ldap_search:
+    dn: "dc=inahym,dc=com"
+    bind_dn: "cn=admin,dc=inahym,dc=com"
+    bind_pw: "admin"
+    scope: children
+  register: result
+
+- name: debug
+  debug:
+    var: result

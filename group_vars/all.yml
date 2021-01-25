@@ -1,0 +1,12 @@
+[ldap]
+ldap01 ansible_host=ldap-server
+
+[container:children]
+ldap
+
+[container:vars]
+ansible_connection=docker
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+domainname=inahym.com 
