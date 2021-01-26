@@ -1,5 +1,0 @@
----
-# vars file for docker-up
-basepath: /home/ubuntu/ansy/docker-compose/
-filename:
-  - ldap

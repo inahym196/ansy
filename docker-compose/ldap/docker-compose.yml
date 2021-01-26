@@ -27,8 +27,3 @@ services:
       PHPLDAPADMIN_HTTPS: "false"
     ports:
       - "8080:80"
-
-networks:
-  default:
-    external:
-      name: common
