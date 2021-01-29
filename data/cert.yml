@@ -1,0 +1,7 @@
+---
+server:
+  - hostname: ldap
+    common_name: "ldap.{{ domainname }}"
+    subject_alt_name: 
+      dns:
+        - ldap

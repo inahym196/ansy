@@ -1,0 +1,6 @@
+---
+# defaults file for enroll-cert
+serverlist: 
+  path: "{{ [data_path,'cert.yml'] | path_join }}"
+cert:
+  path: /etc/ssl/hosts/

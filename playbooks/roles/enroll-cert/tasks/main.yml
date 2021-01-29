@@ -1,0 +1,35 @@
+---
+# tasks file for enroll-cert
+- name: Include serverlist
+  include_vars: "{{ serverlist.path }}"
+
+- name: Create directories for Openssl certificate
+  ansible.builtin.file:
+    path: "{{ [cert.path, item.hostname] | path_join }}"
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+  loop: "{{ server }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Generate openssl private key
+  community.crypto.openssl_privatekey:
+    path: "{{ [cert.path, item.hostname,'ssl.key'] | path_join }}"
+  loop: "{{ server }}"
+  delegate_to: localhost
+  run_once: true
+
+- name: Generate openssl certificate signing request
+  community.crypto.openssl_csr:
+    path: "{{ [cert.path, item.0.hostname,'ssl.csr'] | path_join }}"
+    privatekey_path: "{{ [cert.path, item.0.hostname, 'ssl.key'] | path_join }}"
+    common_name: "{{ item.0.common_name }}"
+    subject_alt_name: "{{ 'DNS:'+item.1 }}"
+  with_subelements:
+    - "{{ server }}"
+    - subject_alt_name.dns
+    - skip_missing: true
+  delegate_to: localhost
+  run_once: true
