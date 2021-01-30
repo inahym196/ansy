@@ -17,6 +17,9 @@ services:
        - '/srv/ldap/data:/var/lib/ldap'
        - '/srv/ldap/config:/etc/ldap/slapd.d'
     tty: true
+    networks:
+      default:
+        ipv4_address: 172.20.0.3
 
   ldap-admin:
     image: osixia/phpldapadmin:stable-amd64
@@ -29,6 +32,9 @@ services:
       PHPLDAPADMIN_HTTPS: "false"
     ports:
       - "8080:80"
+    networks:
+      default:
+        ipv4_address: 172.20.0.4
 
 networks:
   default:
