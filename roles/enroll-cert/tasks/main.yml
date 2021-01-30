@@ -1,0 +1,6 @@
+---
+- name: Include enroll-cert
+  include_tasks: enroll-cert.yml
+ 
+#- name: Include place-cert
+#  include_tasks: place-cert.yml

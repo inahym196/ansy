@@ -1,0 +1,23 @@
+---
+ca:
+  dirname: /etc/ssl/private
+  key:
+    name: CA.key
+  csr:
+    name: CA.csr
+    common_name: "{{ inventory_hostname }}.{{ domainname }}"
+    country_name: JP 
+    organization_name: inahym Inc.
+    email_address: inahym@example.com
+    subject_alt_name:
+      - "DNS:{{ inventory_hostname }}"
+  crt:
+    name: CA.crt
+cert:
+  dirname: /etc/ssl/hosts
+  key:
+    name: ssl.key
+  csr:
+    name: ssl.csr
+  crt:
+    name: ssl.crt

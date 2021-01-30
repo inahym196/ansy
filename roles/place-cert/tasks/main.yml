@@ -1,0 +1,11 @@
+---
+- name: Include serverlist
+  include_vars: "{{ [data_path, 'cert.yml' ] | path_join }}"
+  delegate_to: localhost
+
+- name: place certs each servers if server is not ssl-ca
+  include_tasks: servers.yml
+  loop: "{{ server }}"
+  when: 
+    - inventory_hostname != "ssl-ca01"
+    - item.hostname == inventory_hostname

@@ -1,0 +1,4 @@
+---
+# vars file for place-cert
+serverpath: /etc/ssl/certs/
+capath: /etc/ssl/hosts/

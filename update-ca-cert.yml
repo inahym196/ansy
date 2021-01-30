@@ -1,0 +1,5 @@
+---
+- hosts: sslca
+  roles:
+    - role: update-ca-cert
+      tag: update-ca-cert
