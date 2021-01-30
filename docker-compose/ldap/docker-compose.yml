@@ -19,7 +19,7 @@ services:
     tty: true
     networks:
       default:
-        ipv4_address: 172.20.0.3
+        ipv4_address: 172.20.0.2
 
   ldap-admin:
     image: osixia/phpldapadmin:stable-amd64
@@ -34,7 +34,7 @@ services:
       - "8080:80"
     networks:
       default:
-        ipv4_address: 172.20.0.4
+        ipv4_address: 172.20.0.3
 
 networks:
   default:
