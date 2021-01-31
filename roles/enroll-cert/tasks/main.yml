@@ -1,6 +1,10 @@
 ---
+- name: Include update-ca-cert
+  import_tasks: update-ca-cert.yml
+  when: update_ca_cert_enable | default(false) == true
+  tags: [ update-ca-cert,never ]
+
 - name: Include enroll-cert
   include_tasks: enroll-cert.yml
- 
-#- name: Include place-cert
-#  include_tasks: place-cert.yml
+  when: enroll_cert_enable | default(false) == true
+  tags: [ enroll-cert ]

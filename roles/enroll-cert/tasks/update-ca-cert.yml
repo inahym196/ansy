@@ -1,5 +1,5 @@
 ---
-# tasks file for update-ca-cert
+# tasks file for enroll-cert
 
 - name: Generate openssl CA private key
   community.crypto.openssl_privatekey:
@@ -9,11 +9,11 @@
   community.crypto.openssl_csr:
     privatekey_path: "{{ ca.dirname }}/{{ ca.key.name }}"
     path: "{{ ca.dirname }}/{{ ca.csr.name }}"
-    common_name: "{{ ca.csr.common_name }}"
-    country_name: "{{ ca.csr.country_name }}"
-    organization_name: "{{ ca.csr.organization_name }}"
-    email_address: "{{ ca.csr.email_address }}"
-    subject_alt_name: "{{ ca.csr.subject_alt_name }}"
+    common_name: "{{ update_ca_cert_csr.common_name }}"
+    country_name: "{{ update_ca_cert_csr.country_name }}"
+    organization_name: "{{  update_ca_cert_csr.organization_name }}"
+    email_address: "{{ update_ca_cert_csr.email_address }}"
+    subject_alt_name: "{{ update_ca_cert_csr.subject_alt_name }}"
 
 - name: Generate a self-signed openssl certificate
   community.crypto.x509_certificate:

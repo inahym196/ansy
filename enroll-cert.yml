@@ -1,4 +1,4 @@
 ---
-- hosts: ldap
+- hosts: all
   roles:
     - enroll-cert

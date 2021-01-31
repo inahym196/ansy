@@ -1,2 +1,18 @@
 ---
-# vars file for enroll-cert
+ca:
+  dirname: /etc/ssl/private
+  key:
+    name: CA.key
+  csr:
+    name: CA.csr
+  crt:
+    name: CA.crt
+
+cert:
+  dirname: /etc/ssl/hosts
+  key:
+    name: ssl.key
+  csr:
+    name: ssl.csr
+  crt:
+    name: ssl.crt

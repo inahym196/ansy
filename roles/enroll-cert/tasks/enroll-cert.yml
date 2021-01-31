@@ -1,59 +1,40 @@
 ---
-# tasks file for enroll-cert
-- name: Include sslca-group vars
-  include_vars: group_vars/sslca/vars.yml
-  delegate_to: localhost
-
-- name: Include csrbook vars
-  include_vars: data/csrbook.yml
-#  delegate_to: ssl-ca01
-
-- name: Create directories for Openssl certificate
-  ansible.builtin.file:
-    path: "{{ cert.dirname }}/{{ inventory_hostname }}"
-    state: directory
-    mode: 0755
+- name: delegate ssl-ca tasks
+  block:
+    - name: Create directories for Openssl certificate
+      ansible.builtin.file:
+        path: "{{ cert.dirname }}/{{ inventory_hostname }}"
+        state: directory
+        mode: 0755
+      register: cert_dir
+    
+    - name: Generate openssl private key
+      community.crypto.openssl_privatekey:
+        path: "{{ cert_dir.path }}/{{ cert.key.name }}"
+        mode: 0644
+    
+    - name: Generate openssl certificate signing request
+      community.crypto.openssl_csr:
+        path: "{{ cert_dir.path }}/{{ cert.csr.name }}"
+        privatekey_path: "{{ cert_dir.path }}/{{ cert.key.name }}"
+        common_name: "{{ enroll_cert_CA }}"
+        subject_alt_name: "{{ enroll_cert_SANs }}"
+    
+    - name: Generate openssl certificate signed with my CA certificate
+      community.crypto.x509_certificate:
+        path: "{{ cert_dir.path }}/{{ cert.crt.name }}"
+        csr_path: "{{ cert_dir.path }}/{{ cert.csr.name }}"
+        ownca_path: "{{ ca.dirname }}/{{ ca.crt.name }}"
+        ownca_privatekey_path: "{{ ca.dirname }}/{{ ca.key.name }}"
+        provider: ownca
+      
   delegate_to: ssl-ca01
-  register: cert_dir
-
-- name: Generate openssl private key
-  community.crypto.openssl_privatekey:
-    path: "{{ cert_dir.path }}/{{ cert.key.name }}"
-    mode: 0644
-  delegate_to: ssl-ca01
-
-- name: Generate openssl certificate signing request
-  community.crypto.openssl_csr:
-    path: "{{ cert_dir.path }}/{{ cert.csr.name }}"
-    privatekey_path: "{{ cert_dir.path }}/{{ cert.key.name }}"
-    common_name: "{{ item.common_name }}"
-    subject_alt_name: "{{ item.subject_alt_name }}"
-  loop: "{{ req_csr }}"
-  delegate_to: ssl-ca01
-
-- name: Generate openssl certificate signed with my CA certificate
-  community.crypto.x509_certificate:
-    path: "{{ cert_dir.path }}/{{ cert.crt.name }}"
-    csr_path: "{{ cert_dir.path }}/{{ cert.csr.name }}"
-    ownca_path: "{{ ca.dirname }}/{{ ca.crt.name }}"
-    ownca_privatekey_path: "{{ ca.dirname }}/{{ ca.key.name }}"
-    provider: ownca
-  loop: "{{ req_csr }}"
-  delegate_to: ssl-ca01
-
+    
 - name: Create directories for openssl certificate to server
   ansible.builtin.file:
     path: "{{ ca.dirname }}"
     state: directory
     mode: 0755
-
-- name: debug
-  ansible.builtin.debug:
-    msg: "{{ cert_dir.path }}/{{ item }} and /etc/ssl/{{ item }}"
-  with_items:
-    - "{{ cert.key.name }}"
-    - "{{ cert.crt.name }}"
-
 
 - name: place certificate and privatekey to server
   ansible.builtin.copy:
