@@ -2,11 +2,11 @@
 # tasks file for enroll-cert
 - name: Include sslca-group vars
   include_vars: group_vars/sslca/vars.yml
-  delegate_to: ssl-ca01
+  delegate_to: localhost
 
 - name: Include csrbook vars
   include_vars: data/csrbook.yml
-  delegate_to: ssl-ca01
+#  delegate_to: ssl-ca01
 
 - name: Create directories for Openssl certificate
   ansible.builtin.file:
@@ -19,6 +19,7 @@
 - name: Generate openssl private key
   community.crypto.openssl_privatekey:
     path: "{{ cert_dir.path }}/{{ cert.key.name }}"
+    mode: 0644
   delegate_to: ssl-ca01
 
 - name: Generate openssl certificate signing request
@@ -46,11 +47,19 @@
     state: directory
     mode: 0755
 
-- name: Place certificate and privatekey to server
+- name: debug
+  ansible.builtin.debug:
+    msg: "{{ cert_dir.path }}/{{ item }} and /etc/ssl/{{ item }}"
+  with_items:
+    - "{{ cert.key.name }}"
+    - "{{ cert.crt.name }}"
+
+
+- name: place certificate and privatekey to server
   ansible.builtin.copy:
-    src: "{{ cert_dir.path }}/{{ cert.crt.name }}"
-    dest: "/etc/ssl/{{ cert.crt.name }}"
-#  with_items:
-#    - "{{ cert.key.name }}"
-#    - "{{ cert.crt.name }}"
-  delegate_to: localhost
+    src: "{{ cert_dir.path }}/{{ item }}"
+    dest: "/etc/ssl/{{ item }}"
+  with_items:
+    - "{{ cert.key.name }}"
+    - "{{ cert.crt.name }}"
+
