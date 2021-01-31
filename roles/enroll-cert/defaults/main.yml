@@ -1,0 +1,15 @@
+---
+# defaults file for enroll-cert
+update_ca_cert_enable: false
+update_ca_cert_csr:
+  common_name: "{{ inventory_hostname }}.{{ domainname }}"
+  country_name: JP
+  organization_name: inahym Inc.
+  email_address: inahym@example.com
+  subject_alt_name:
+    - "DNS:{{ inventory_hostname }}"
+
+enroll_cert_enable: false
+enroll_cert_CA: "{{ inventory_hostname }}.{{ domainname }}"
+enroll_cert_SANs: 
+  - "DNS:{{ inventory_hostname }}"

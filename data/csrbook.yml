@@ -1,0 +1,5 @@
+---
+req_csr:
+  - common_name: "{{ inventory_hostname }}.{{ domainname }}"
+    subject_alt_name: 
+      - "DNS:{{ inventory_hostname }}"

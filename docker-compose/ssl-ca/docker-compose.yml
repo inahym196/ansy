@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  ssl-ca:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    container_name: ssl-ca
+    hostname: ssl-ca01
+    domainname: inahym.com
+    tty: true
+    volumes:
+      - /etc/ssl/hosts:/etc/ssl/hosts
+    networks:
+      default:
+        ipv4_address: 172.20.0.4
+
+
+networks:
+  default:
+    external:
+      name: common
