@@ -1,7 +1,0 @@
----
-# tasks file for manage-ldap-user
-- name: present users OU
-  community.general.ldap_entry:
-    dn: "ou=users,dc=ldap,dc=inahym,dc=com"
-    args: "{{ ldap_auth }}"
-
