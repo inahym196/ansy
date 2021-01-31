@@ -11,7 +11,7 @@ services:
     domainname: inahym.com
     environment:
       LDAP_ORGANISATION: inahym Inc.
-      LDAP_DOMAIN: inahym.com
+      LDAP_DOMAIN: ldap.inahym.com
       LDAP_ADMIN_PASSWORD: admin
     volumes: 
        - '/srv/ldap/data:/var/lib/ldap'
