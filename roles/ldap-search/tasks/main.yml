@@ -5,4 +5,9 @@
   community.general.ldap_search:
     dn: "dc=ldap,dc=inahym,dc=com"
     scope: children
-    args: "{{ ldap_auth }}"
+    bind_dn: "{{ ldap_auth.bind_dn }}"
+    bind_pw: "{{ ldap_auth.bind_pw }}"
+  register: ret
+
+- name: debug
+  debug: var=ret

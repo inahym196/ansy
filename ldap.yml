@@ -1,5 +1,5 @@
 ---
 - hosts: ldap
   roles:
-    - ldap-user
-    - ldap-group
+    - enroll-ldap
+#    - ldap-search

@@ -1,2 +1,8 @@
 ---
 # defaults file for ldap-search
+
+base_dn: "dc=idap,dc=inahym,dc=com"
+
+ldap_auth:
+  bind_dn: "cn=admin,{{ base_dn }}"
+  bind_pw: "admin"

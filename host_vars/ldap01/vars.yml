@@ -1,2 +1,7 @@
 ---
 enroll_cert_enable: true
+
+base_dn: "dc=ldap,dc=inahym,dc=com"
+ldap_auth:
+  bind_dn: "cn=admin,{{ base_dn }}"
+  bind_pw: "{{ vault_bind_pw }}"

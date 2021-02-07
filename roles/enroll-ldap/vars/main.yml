@@ -1,0 +1,3 @@
+---
+# vars file for enroll-ldap
+cred_key: /etc/ansible/cred/ansible
