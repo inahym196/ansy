@@ -3,12 +3,11 @@
 
 - name: ldap-search
   community.general.ldap_search:
-    dn: "dc=inahym,dc=com"
-    bind_dn: "cn=admin,dc=inahym,dc=com"
-    bind_pw: "admin"
+    dn: "dc=ldap,dc=inahym,dc=com"
     scope: children
-  register: result
+    bind_dn: "{{ ldap_auth.bind_dn }}"
+    bind_pw: "{{ ldap_auth.bind_pw }}"
+  register: ret
 
 - name: debug
-  debug:
-    var: result
+  debug: var=ret

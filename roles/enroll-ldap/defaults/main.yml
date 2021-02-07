@@ -1,0 +1,47 @@
+---
+# defaults file for enroll-ldap
+
+ou_list:
+  - rdn: users
+    objectClass:
+      - top
+      - account
+      - posixAccount
+    attr: "{{ user_attr }}"
+    
+  - rdn: groups
+    objectClass:
+      - top
+      - posixGroup
+    attr: "{{ group_attr }}"
+
+user_attr:
+
+  - cn: ansible
+    uid: ansible
+    uidNumber: 5000
+    gidNumber: 5000
+    homeDirectory: /home/ansible
+
+  - cn: alice
+    uid: alice
+    uidNumber: 5001
+    gidNumber: 5001
+    homeDirectory: /home/alice
+    
+  - cn: bob
+    uid: bob
+    uidNumber: 5002
+    gidNumber: 5002
+    homeDirectory: /home/bob
+
+group_attr:
+  
+  - cn: groupA
+    gidNumber: 10001
+
+  - cn: groupB
+    gidNumber: 10002
+
+  - cn: groupC
+    gidNumber: 10003
