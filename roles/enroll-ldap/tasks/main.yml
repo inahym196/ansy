@@ -1,28 +1,22 @@
 ---
 # tasks file for enroll-ldap
-#- name: Enroll OU
-#  community.general.ldap_entry:
-#    dn: "ou={{ item.rdn }},{{ base_dn }}"
-#    objectClass: organizationalUnit
-#  loop: "{{ ou_list }}"
-#
-#- name: Enroll CN under OU
-#  community.general.ldap_entry:
-#    dn: "cn={{ item.1.cn }},ou={{ item.0.rdn }},{{ base_dn }}"
-#    objectClass: "{{ item.0.objectClass }}"
-#    attributes: "{{ item.1 }}"
-#  with_subelements: 
-#    - "{{ ou_list }}"
-#    - attr  
-#
-#- name: remove ansible password for ldap
-#  community.general.ldap_attr:
-#    dn: "cn=ansible,ou=users,{{ base_dn }}"
-#    name: userPassword
-#    state: absent
-- name: debug
+- name: Enroll OU
+  community.general.ldap_entry:
+    dn: "ou={{ item.rdn }},{{ base_dn }}"
+    objectClass: organizationalUnit
+  loop: "{{ ou_list }}"
+
+- name: Enroll CN under OU
+  community.general.ldap_entry:
+    dn: "cn={{ item.1.cn }},ou={{ item.0.rdn }},{{ base_dn }}"
+    objectClass: "{{ item.0.objectClass }}"
+    attributes: "{{ item.1 }}"
+  with_subelements: 
+    - "{{ ou_list }}"
+    - attr  
+
+- name: register password
   shell: "cat {{ cred_key }}"
-  delegate_to: localhost
   register: row_pass
   delegate_to: localhost
 
@@ -31,8 +25,8 @@
   register: key
 
 - name: Change ansible password for ldap
-  community.general.ldap_attr:
+  community.general.ldap_attrs:
     dn: "cn=ansible,ou=users,{{ base_dn }}"
-    name: userPassword
-    values: "{{ key.stdout }}"
+    attributes:
+      userPassword: "{{ key.stdout }}"
     state: exact
